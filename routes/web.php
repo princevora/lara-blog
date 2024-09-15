@@ -6,6 +6,6 @@ Route::get('/', function () {
     return view('frontend.blogs.index');
 })->name('index');
 
-Route::get('admin/dashboard', function () {
-    return view('backend.admin.dashboard');
-});
+Route::prefix('admin')->group(function () {
+    Route::view('dashboard', 'backend.admin.blogs.create');
+})->name('admin.');

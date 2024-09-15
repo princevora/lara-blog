@@ -35,13 +35,12 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                    <span>Blogs Settings</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
+                        <a class="collapse-item" href="buttons.html">Blogs</a>
+                        <a class="collapse-item" href="">Create Blog</a>
                     </div>
                 </div>
             </li>
@@ -140,7 +139,13 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item text-primary" role="button">Dashboard</li>
+                            <li class="breadcrumb-item text-primary" role="button">@yield('parent_page')</li>
+                            <li class="breadcrumb-item active" aria-current="page">@yield('child_page')</li>
+                        </ol>
+                    </nav>
                     @yield('content')
 
                 </div>
