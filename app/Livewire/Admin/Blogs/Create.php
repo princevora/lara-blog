@@ -6,7 +6,6 @@ use App\Models\Blog;
 use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
-#[Lazy]
 class Create extends Component
 {
     /**
@@ -19,6 +18,9 @@ class Create extends Component
      */
     public string $slug;
 
+    /**
+     * @var ?bool $slugAvailability
+     */
     public ?bool $slugAvailability = null;
 
     /**

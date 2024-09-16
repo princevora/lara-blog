@@ -61,9 +61,4 @@
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('message.processed', () => {
-            alert('OK');
-        })
-    </script>
 </div>
