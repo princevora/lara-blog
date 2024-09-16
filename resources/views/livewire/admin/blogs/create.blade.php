@@ -50,12 +50,18 @@
 
                     <div class="mb-3">
                         <label for="title" class="form-label">Meta Description</label>
-                        <input type="text" wire:model.lazy='title' class="form-control" id="title">
+                        <input type="text" wire:model='meta_description' class="form-control" id="title">
                     </div>
 
                     <div class="mb-3">
                         <label for="title" class="form-label">Meta Keywords</label>
-                        <input type="text" wire:model.lazy='title' class="form-control" id="title">
+                        <input type="text" wire:model='meta_keywords' class="form-control" id="title">
+                    </div>
+
+                    <div class="mb-3">
+                        <button class=" btn btn-primary">
+                            Create Blog
+                        </button>
                     </div>
                 </form>
             </div>
