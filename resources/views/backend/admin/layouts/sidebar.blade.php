@@ -32,15 +32,15 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapseda" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Blogs Settings</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseTwo" class="collapse {{ Route::is('admin.blogs.*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="buttons.html">Blogs</a>
-                        <a class="collapse-item" href="">Create Blog</a>
+                        <a class="collapse-item {{ Route::is('admin.blogs.view') ? 'active' : '' }}" href="{{ route('admin.blogs.view') }}">Blogs</a>
+                        <a class="collapse-item {{ Route::is('admin.blogs.create') ? 'active' : '' }}" href="{{ route('admin.blogs.create') }}">Create Blog</a>
                     </div>
                 </div>
             </li>
