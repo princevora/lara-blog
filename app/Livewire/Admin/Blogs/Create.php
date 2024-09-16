@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Admin\Blogs;
 
+use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
+#[Lazy]
 class Create extends Component
 {
     /**
@@ -24,6 +26,22 @@ class Create extends Component
         return view('livewire.admin.blogs.create');
     }
 
+    public function placeholder()
+    {
+       return <<<HTML
+                <div
+                    class="d-flex justify-content-start mt-5 mx-5"
+                >
+                    <div
+                        class="spinner-border text-primary spinner-border-sm"
+                        role="status"
+                    >
+                    </div>
+                </div>
+                
+        HTML;
+    }
+
     public function updatedTitle(mixed $value)
     {
         // Convert to lowercase
@@ -36,6 +54,6 @@ class Create extends Component
         $value = preg_replace('/\s+/', ' ', trim($value));
 
         // Replace spaces with hyphens
-        $this->title = str_replace(' ', '-', $value);
+        $this->slug = str_replace(' ', '-', $value);
     }
 }

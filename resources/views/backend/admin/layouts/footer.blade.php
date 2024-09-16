@@ -47,7 +47,11 @@ aria-hidden="true">
 
 <!-- Core plugin JavaScript-->
 <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
+
+<script>
+</script>
 </body>
 
 </html>
