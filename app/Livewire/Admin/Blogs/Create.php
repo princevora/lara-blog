@@ -5,7 +5,6 @@ namespace App\Livewire\Admin\Blogs;
 use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
-#[Lazy]
 class Create extends Component
 {
     /**
