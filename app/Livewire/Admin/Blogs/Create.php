@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Blogs;
 
 use App\Models\Blog;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
@@ -47,6 +48,9 @@ class Create extends Component
     public const PREFIX = 'blog-';
 
     public $meta_image;
+
+    private const STORAGE_PATH = '/storage/uploads/';
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
@@ -74,18 +78,31 @@ class Create extends Component
 
     public function save()
     {
-        // $this->validate([
-        //     'title' => 'required|min:30',
-        //     'slug' => 'required',
-        //     'content' => 'required',
-        //     'meta_description' => 'required',
-        //     'meta_keywords' => 'required',
-        //     'meta_image' => 'required|image|max:40000'
-        // ]);
+        $this->validate([
+            'title' => 'required|min:30',
+            'slug' => 'required',
+            'content' => 'required',
+            'meta_description' => 'required',
+            'meta_keywords' => 'required',
+            'meta_image' => 'required|image|max:40000'
+        ]);
 
         // Create File Name
         $fileName = self::PREFIX . date('Y-m-d-s-i') . '-' . Str::random() . '.' . $this->meta_image->getClientOriginalExtension();
-        
+
+        // Check if the slug already exists.
+        if(Blog::where('slug', $this->slug)->exists()) 
+            ValidationException::withMessages(['slug' => 'The slug already exists']);
+
+        // Add to database.
+        Blog::create([
+            'title' => $this->title,
+            'slug' => $this->slug,
+            'blog_content' => $this->content,
+            'meta_keywords' => $this->meta_keywords,
+            'meta_description' => $this->meta_description
+        ]);
+
         // Save the image.
         $this->meta_image->storeAs('uploads', $fileName, 'public');
     }
