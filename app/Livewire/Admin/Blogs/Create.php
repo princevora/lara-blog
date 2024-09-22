@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Blogs;
 
 use App\Models\Blog;
 use Illuminate\Validation\ValidationException;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
@@ -11,6 +12,7 @@ use Illuminate\Support\Str;
 class Create extends Component
 {
     use WithFileUploads;
+    use LivewireAlert;
 
     /**
      * @var string $title
@@ -87,8 +89,15 @@ class Create extends Component
             'meta_image' => 'required|image|max:40000'
         ]);
 
-        // Create File Name
-        $fileName = self::PREFIX . date('Y-m-d-s-i') . '-' . Str::random() . '.' . $this->meta_image->getClientOriginalExtension();
+        $fileName = null;
+
+        if ($this->meta_image) {
+            // Create File Name
+            $fileName = self::PREFIX . date('Y-m-d-s-i') . '-' . Str::random() . '.' . $this->meta_image->getClientOriginalExtension();
+
+            // Save the image.
+            $this->meta_image->storeAs('uploads', $fileName, 'public');
+        }
 
         // Check if the slug already exists.
         if(Blog::where('slug', $this->slug)->exists()) 
@@ -100,10 +109,11 @@ class Create extends Component
             'slug' => $this->slug,
             'blog_content' => $this->content,
             'meta_keywords' => $this->meta_keywords,
-            'meta_description' => $this->meta_description
+            'meta_description' => $this->meta_description,
+            'meta_image' => self::STORAGE_PATH . $fileName
         ]);
 
-        // Save the image.
-        $this->meta_image->storeAs('uploads', $fileName, 'public');
+        // Send response
+        $this->alert(message: "The Blog Has been created successfully");
     }
 }
