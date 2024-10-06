@@ -47,11 +47,18 @@ class Create extends Component
     /**
      * @var string 
      */
-    public const PREFIX = 'blog-';
+    public const PREFIX = [
+        'meta_image' => 'blog-',
+        'thubmnail' => 'thumbnail' 
+    ];
 
     public $meta_image;
+    public $thumbnail;
 
-    private const STORAGE_PATH = '/storage/uploads/';
+    private const STORAGE_PATH = [
+        'meta_image' => '/storage/uploads/blogs/seo/',
+        'thumbnail' => '/storage/uploads/blogs/thumbnail',
+    ];
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -86,22 +93,36 @@ class Create extends Component
             'content' => 'required',
             'meta_description' => 'required',
             'meta_keywords' => 'required',
-            'meta_image' => 'required|image|max:40000'
+            'meta_image' => 'required|image|max:40000',
+            'thumbnail' => 'required|image|max:40000'
         ]);
 
-        $fileName = null;
+        $uploadedMetaImage = null;
 
         if ($this->meta_image) {
             // Create File Name
-            $fileName = self::PREFIX . date('Y-m-d-s-i') . '-' . Str::random() . '.' . $this->meta_image->getClientOriginalExtension();
+            $fileName = self::PREFIX['meta_image'] . date('Y-m-d-s-i') . '-' . Str::random() . '.' . $this->meta_image->getClientOriginalExtension();
 
             // Save the image.
             $this->meta_image->storeAs('uploads', $fileName, 'public');
+
+            $uploadedMetaImage = self::STORAGE_PATH['meta_image'] . $fileName;
+        }
+
+        if ($this->thumbnail) {
+            // Create File Name
+            $fileName = self::PREFIX['thubmnail'] . date('Y-m-d-s-i') . '-' . Str::random() . '.' . $this->meta_image->getClientOriginalExtension();
+
+            // Save the image.
+            $this->meta_image->storeAs('uploads', $fileName, 'public');
+
+            $uploadedMetaImage = self::STORAGE_PATH['thumbnail'] . $fileName;
         }
 
         // Check if the slug already exists.
         if(Blog::where('slug', $this->slug)->exists()) 
             ValidationException::withMessages(['slug' => 'The slug already exists']);
+
 
         // Add to database.
         Blog::create([
@@ -110,7 +131,8 @@ class Create extends Component
             'blog_content' => $this->content,
             'meta_keywords' => $this->meta_keywords,
             'meta_description' => $this->meta_description,
-            'meta_image' => self::STORAGE_PATH . $fileName
+            'meta_image' => $uploadedMetaImage,
+            // 'thumbnail' => 
         ]);
 
         // Send response

@@ -1,6 +1,5 @@
 <div class="row">
     <div class="col-lg-9">
-
         <!-- Dropdown Card Example -->
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
@@ -9,7 +8,7 @@
             </div>
             <!-- Card Body -->
             <div class="card-body">
-                <form wire:submit.prevent='save'>
+                <form wire:submit.prevent='update'>
                     <div class="mb-3">
                         <label for="title" class="form-label">Blog Title</label>
                         <input type="text" wire:model.lazy='title' class="form-control" id="title">
@@ -40,7 +39,7 @@
                             </span>
                         @enderror
                         <small class="d-flex gap-2 mt-2">
-                            @if (!empty($slug) && $slugAvailability)
+                            @if (!empty($slug) && $slugAvailability && $slug !== $blog->slug)
                                 <span class="text-success">
                                     <svg style="height: 18px" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -49,7 +48,7 @@
                                     </svg>
                                     The slug is available
                                 </span>
-                            @elseif(!empty($slug) && !$slugAvailability)
+                            @elseif(!empty($slug) && !$slugAvailability && $slug !== $blog->slug)
                                 <span class="text-danger">
                                     <svg style="height: 18px" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -65,7 +64,9 @@
                     <div class="mb-3">
                         <div wire:ignore>
                             <label for="blog_html" class="form-label">Page Content</label>
-                            <textarea id="summernote" wire:model.lazy='content' name="blog_html"></textarea>
+                            <textarea id="summernote" wire:model.lazy='content' name="blog_html">
+                                {{ $content }}
+                            </textarea>
                         </div>
 
                         @error('content')
@@ -89,9 +90,30 @@
                         >
                         </div>
                         
-                        @if ($meta_image)
-                            <img height="100" class="mb-2" width="100" src="{{ $meta_image->temporaryUrl() }}" alt="Image Preview">
+                        @if ($meta_image && $meta_image instanceof Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
+                            <img 
+                                wire:loading.remove 
+                                wire:target='meta_image' 
+                                height="100" 
+                                class="mb-2" 
+                                width="100" 
+                                src="{{ $meta_image->temporaryUrl() }}" 
+                                alt="Image Preview"
+                            />
                         @endif
+
+                        @if (!is_null($meta_image) && !$meta_image instanceof Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
+                            <img 
+                                wire:loading.remove 
+                                wire:target='meta_image' 
+                                height="100" 
+                                class="mb-2" 
+                                width="100" 
+                                src="{{ asset($meta_image) }}" 
+                                alt="Image Preview"
+                            >
+                        @endif
+
                         <input type="file" wire:model='meta_image' class="form-control col-6" id="title">
                     </div>
                     <div class="mb-3">
@@ -124,7 +146,7 @@
                         <button type="submit" class=" btn btn-primary d-flex">
                             Create Blog
 
-                            <div wire:loading wire:target='save'
+                            <div wire:loading wire:target='update'
                                 class="mx-2 mt-1 spinner-border text-white spinner-border-sm" role="status">
                             </div>
                         </button>
