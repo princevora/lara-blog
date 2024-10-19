@@ -5,10 +5,10 @@
 @section('content')
     <livewire:admin.blogs.view />
 @endsection
-{{-- @push('scripts')
+@push('scripts')
     <script>
         $(document).ready(function() {
             $('table').DataTable();
         });
     </script>
-@endpush --}}
+@endpush
