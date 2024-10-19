@@ -20,7 +20,7 @@
                     </thead>
                     <tbody>
                       @foreach ($blogs as $index => $blog )
-                        <tr>
+                        <tr wire:key='{{ $index }}'>
                             <td> {{++$index}} </td>
                             <td> {{ $blog->title }} </td>
                             <td> {{ $blog->created_at->diffForHumans() }} </td>

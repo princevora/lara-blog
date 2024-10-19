@@ -7,6 +7,8 @@
 @endsection
 @push('scripts')
     <script>
+        window.addEventListener("popstate", function (event) { window.location.reload(); });
+
         $(document).ready(function() {
             $('table').DataTable();
         });
