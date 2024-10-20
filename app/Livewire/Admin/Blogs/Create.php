@@ -110,7 +110,7 @@ class Create extends Component
             // Save the image.
             $this->meta_image->storeAs('uploads', $fileName, 'public');
 
-            $uploadedMetaImage = self::STORAGE_PATH['thumbnail'] . $fileName;
+            $uploadedMetaImage = $fileName;
         }
 
 
