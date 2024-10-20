@@ -1,6 +1,6 @@
-<div class="grid grid-cols-2">
+<div class="grid md:grid-cols-4 grid-cols-2">
     @foreach ($blogs as $blog)
-        <div role="status" style="max-width: 329px; padding: 16px; border-radius: 8px;">
+        <div role="status" style="max-width: 329px; padding: 16px; border-radius: 8px; margin-top: 3px">
             <div
                 style="display: flex; align-items: center; justify-content: center; height: 192px; margin-bottom: 16px; background-color: #4f5153; border-radius: 8px;">
                 <svg style="width: 40px; height: 40px; color: #e5e7eb;" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"

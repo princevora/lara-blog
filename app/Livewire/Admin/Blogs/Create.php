@@ -8,6 +8,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
+use function Illuminate\Filesystem\join_paths;
 
 class Create extends Component
 {
@@ -47,16 +48,12 @@ class Create extends Component
     /**
      * @var string 
      */
-    public const PREFIX = [
-        'thubmnail' => 'thumbnail-' 
-    ];
+    public const PREFIX = 'thumbnail-';
 
     public $meta_image;
     public $thumbnail;
 
-    private const STORAGE_PATH = [
-        'thumbnail' => '/storage/uploads/blogs/thumbnail',
-    ];
+    private const STORAGE_PATH = 'uploads/blogs/thumbnail';
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -108,9 +105,15 @@ class Create extends Component
             $fileName = self::PREFIX['thubmnail'] . date('Y-m-d-s-i') . '-' . Str::random() . '.' . $this->meta_image->getClientOriginalExtension();
 
             // Save the image.
-            $this->meta_image->storeAs('uploads', $fileName, 'public');
+            $this
+                ->meta_image
+                ->storeAs(
+                    self::STORAGE_PATH, 
+                    $fileName, 
+                    'public'
+                );
 
-            $uploadedMetaImage = $fileName;
+            $uploadedMetaImage = join_paths('storage', self::STORAGE_PATH . $fileName);
         }
 
 

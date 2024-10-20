@@ -9,6 +9,7 @@ use Illuminate\Validation\ValidationException;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use function Illuminate\Filesystem\join_paths;
 
 class Edit extends Component
 {
@@ -50,11 +51,11 @@ class Edit extends Component
     /**
      * @var string 
      */
-    public const PREFIX = 'blog-';
+    public const PREFIX = 'thumbnail-';
 
     public $meta_image;
 
-    private const STORAGE_PATH = '/storage/uploads/';
+    private const STORAGE_PATH = 'uploads/blogs/thumbnail/';
 
     public function mount(Request $request)
     {
@@ -133,9 +134,15 @@ class Edit extends Component
             $fileName = self::PREFIX . date('Y-m-d-s-i') . '-' . Str::random() . '.' . $this->meta_image->getClientOriginalExtension();
 
             // Save the image.
-            $this->meta_image->storeAs('uploads', $fileName, 'public');
+            $this
+                ->meta_image
+                ->storeAs(
+                    self::STORAGE_PATH, 
+                    $fileName, 
+                    'public'
+                );
 
-            $uploadedMetaImage = self::STORAGE_PATH . $fileName;
+            $uploadedMetaImage = join_paths('storage', self::STORAGE_PATH . $fileName);
         }
 
         // Check if the slug already exists.
