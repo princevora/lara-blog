@@ -8,14 +8,15 @@ use Livewire\Component;
 
 class ListBlog extends Component
 {
+    /**
+     * @var mixed
+     */
     public $blogs;
 
-    /**
-     * @return void
-     */
-    public function mount()
+    public function loadMore()
     {
-        $this->blogs = Blog::all();     
+        $this->blogs = Blog::take(10)
+            ->whereNotIn('id', $this->blogs->pluck('id')) ?? [];
     }
 
     /**
@@ -31,6 +32,9 @@ class ListBlog extends Component
      */
     public function placeholder()
     {
+        $this->blogs = Blog::take(10)
+                        ->get(); 
+                        
         return view('frontend.blogs.skeleton');
     }
 }

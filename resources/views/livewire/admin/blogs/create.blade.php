@@ -78,7 +78,7 @@
                     </div>
                     
                     <div class="">
-                        <label for="title" class="form-label">Meta Image</label>
+                        <label for="title" class="form-label">Thumbnail Image</label>
                     </div>
                     <div class="mb-3">
                         <div

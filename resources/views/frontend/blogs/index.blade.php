@@ -1,6 +1,6 @@
 @extends('frontend.layouts.layout')
 @section('content')
-<main class=" pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased grid grid-cols-4">
+<main class=" pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased grid grid-cols-2">
     <livewire:frontend.blogs.list-blog lazy>
 </main>
 

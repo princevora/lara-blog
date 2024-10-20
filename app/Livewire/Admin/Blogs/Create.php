@@ -48,15 +48,13 @@ class Create extends Component
      * @var string 
      */
     public const PREFIX = [
-        'meta_image' => 'blog-',
-        'thubmnail' => 'thumbnail' 
+        'thubmnail' => 'thumbnail-' 
     ];
 
     public $meta_image;
     public $thumbnail;
 
     private const STORAGE_PATH = [
-        'meta_image' => '/storage/uploads/blogs/seo/',
         'thumbnail' => '/storage/uploads/blogs/thumbnail',
     ];
 
@@ -94,22 +92,18 @@ class Create extends Component
             'meta_description' => 'required',
             'meta_keywords' => 'required',
             'meta_image' => 'required|image|max:40000',
-            'thumbnail' => 'required|image|max:40000'
         ]);
 
+        // Check if the slug already exists.
+        if(Blog::where('slug', $this->slug)->exists()){
+            $this->slugAvailability = false;
+            
+            return ValidationException::withMessages(['slug' => 'The slug already exists']);
+        }
+        
         $uploadedMetaImage = null;
 
         if ($this->meta_image) {
-            // Create File Name
-            $fileName = self::PREFIX['meta_image'] . date('Y-m-d-s-i') . '-' . Str::random() . '.' . $this->meta_image->getClientOriginalExtension();
-
-            // Save the image.
-            $this->meta_image->storeAs('uploads', $fileName, 'public');
-
-            $uploadedMetaImage = self::STORAGE_PATH['meta_image'] . $fileName;
-        }
-
-        if ($this->thumbnail) {
             // Create File Name
             $fileName = self::PREFIX['thubmnail'] . date('Y-m-d-s-i') . '-' . Str::random() . '.' . $this->meta_image->getClientOriginalExtension();
 
@@ -118,10 +112,6 @@ class Create extends Component
 
             $uploadedMetaImage = self::STORAGE_PATH['thumbnail'] . $fileName;
         }
-
-        // Check if the slug already exists.
-        if(Blog::where('slug', $this->slug)->exists()) 
-            ValidationException::withMessages(['slug' => 'The slug already exists']);
 
 
         // Add to database.
@@ -132,7 +122,6 @@ class Create extends Component
             'meta_keywords' => $this->meta_keywords,
             'meta_description' => $this->meta_description,
             'meta_image' => $uploadedMetaImage,
-            // 'thumbnail' => 
         ]);
 
         // Send response
